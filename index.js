@@ -1,7 +1,7 @@
 const express = require('express');
 const msRestAzure = require('ms-rest-azure');
 const KeyVault = require('azure-keyvault');
-const KEY_VAULT_URI = null || process.env.KEY_VAULT_URI;
+const KEY_VAULT_URI = null || process.env[KEY_VAULT_URI];
 require('dotenv').config();
 
 let app = express();
