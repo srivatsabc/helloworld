@@ -21,6 +21,8 @@ function getKeyVaultCredentials(){
 
 function getKeyVaultSecret(credentials) {
   console.log("Here getKeyVaultSecret " + credentials);
+  console.log("MSI_ENDPOINT " + process.env['MSI_ENDPOINT']);
+  console.log("MSI_SECRET " + process.env['MSI_SECRET']);
   let keyVaultClient = new KeyVault.KeyVaultClient(credentials);
   return keyVaultClient.getSecret(KEY_VAULT_URI, 'secret', "");
 }
