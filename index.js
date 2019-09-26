@@ -3,6 +3,7 @@ const msRestAzure = require('ms-rest-azure');
 const KeyVault = require('azure-keyvault');
 const KEY_VAULT_URI = null || process.env['KEY_VAULT_URI'];
 require('dotenv').config();
+var JSONIFY = require('json-stringify');
 
 let app = express();
 let clientId = process.env.CLIENT_ID; // service principal
@@ -12,7 +13,6 @@ let secret = process.env.APPLICATION_SECRET;
 
 function getKeyVaultCredentials(){
   if (process.env.APPSETTING_WEBSITE_SITE_NAME){
-    console.log("Here 1");
     return msRestAzure.loginWithAppServiceMSI({resource: 'https://vault.azure.net'});
   } else {
     return msRestAzure.loginWithServicePrincipalSecret(clientId, secret, domain);
@@ -20,20 +20,16 @@ function getKeyVaultCredentials(){
 }
 
 function getKeyVaultSecret(credentials) {
-  console.log("Here getKeyVaultSecret " + credentials);
-  console.log("MSI_ENDPOINT " + process.env['MSI_ENDPOINT']);
-  console.log("MSI_SECRET " + process.env['MSI_SECRET']);
   let keyVaultClient = new KeyVault.KeyVaultClient(credentials);
   return keyVaultClient.getSecret(KEY_VAULT_URI, 'secret', "");
 }
 
 app.get('/ad', function (req, res) {
-  console.log("Here 2 : " + KEY_VAULT_URI);
   getKeyVaultCredentials().then(getKeyVaultSecret).then(function (secret){
-    console.log("Here 4");
-    res.send(`Your secret value is: ${secret.value}.`);
+    var result = {value: `${secret.value}`}
+    res.header("Content-Type", "application/json");
+    res.send(JSONIFY(result));
   }).catch(function (err) {
-    console.log("err: " + err);
     res.send(err);
   });
 });
