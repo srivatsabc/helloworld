@@ -26,7 +26,7 @@ function getKeyVaultSecret(credentials) {
 }
 
 app.get('/ad', function (req, res) {
-  console.log("Here 2");
+  console.log("Here 2 : " + KEY_VAULT_URI);
   getKeyVaultCredentials().then(getKeyVaultSecret).then(function (secret){
     console.log("Here 4");
     res.send(`Your secret value is: ${secret.value}.`);
