@@ -35,7 +35,7 @@ app.get('/ad', function (req, res) {
 });
 
 app.get('/ping', function (req, res) {
-  res.send('Hello World!!!');
+  res.send('Hello World Srivatsa!!!');
 });
 
 let port = process.env.PORT || 8080;
